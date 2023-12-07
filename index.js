@@ -2,7 +2,7 @@ const express = require('express') // const express is a function
 const app = express()
 const morgan = require('morgan')
 
-const baseUrl = 'http://localhost:3001/api/persons'
+const baseUrl = '/api/persons'
 const cors = require('cors')
 app.use(cors())
 
