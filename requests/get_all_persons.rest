@@ -1,2 +1,1 @@
-//GET https://bookyphone.onrender.com/api/persons
 GET http://localhost:3001/api/persons
