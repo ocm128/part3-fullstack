@@ -11,9 +11,9 @@ const Person = require('./models/person')
 app.use(cors())
 app.use(express.json())
 app.use(express.static('build'))
-
 //app.use(morgan('tiny'))
 
+// create custom message in the middleweare
 morgan.token('type', function(req, res) {
   console.log(res)
   return JSON.stringify(req.body)
@@ -21,35 +21,37 @@ morgan.token('type', function(req, res) {
 
 app.use(morgan(':method :url :status :response-time ms - :res[content-length] :type'))
 
-let persons = [
+
+//  LOCAL DB
+/* let persons = [
   {
-    "id": 2,
-    "name": "Ada Lovelace",
-    "number": "39-44-5323523"
+    'id': 2,
+    'name': 'Ada Lovelace',
+    'number': '39-44-5323523'
   },
   {
-    "id": 3,
-    "name": "Dan Abramov",
-    "number": "12-43-234345"
+    'id': 3,
+    'name': 'Dan Abramov',
+    'number': '12-43-234345'
   },
   {
-    "id": 4,
-    "name": "Mary Poppendieck",
-    "number": "39-23-6423122"
+    'id': 4,
+    'name': 'Mary Poppendieck',
+    'number': '39-23-6423122'
   },
   {
-    "name": "Arto Hellas",
-    "number": "333333344",
-    "id": 5
+    'name': 'Arto Hellas',
+    'number': '333333344',
+    'id': 5
   },
   {
-    "name": "John Doe",
-    "number": "2222344",
-    "id": 6
+    'name': 'John Doe',
+    'number': '2222344',
+    'id': 6
   }
 ]
 
-
+ */
 // Exercise 3.13
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(result => {
@@ -64,18 +66,18 @@ app.get('/api/persons/:id', (request, response, next) => {
 
   Person.findById(request.params.id)
     .then(person => {
-			if (person) { // if isn't undefined
-				response.json(person)
-			} else {
-				response.status(404).end()
-			}
+      if (person) { // if isn't undefined
+        response.json(person)
+      } else {
+        response.status(404).end()
+      }
     })
     .catch(error => {
       //response.status(400).send({error: 'malformatted id'})
       next(error)
     })
 })
- 
+
 
 app.get('/info', (request, response) => {
   const date = new Date(Date.now())
@@ -87,7 +89,7 @@ app.get('/info', (request, response) => {
   const id = Number(request.params.id)
 
   // filter return one array with a more items
-  persons = persons.filter(person => person.id != id) 
+  persons = persons.filter(person => person.id != id)
   response.status(204).end()
 })
 */
@@ -99,7 +101,7 @@ app.delete('/api/persons/:id', (request, response, next) => {
 
   Person
     .findByIdAndDelete(id)
-    .then(result => {
+    .then(() => { //
       response.status(204).end()
     })
     .catch(error => next(error))
@@ -142,10 +144,10 @@ app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
   if (!body.name || !body.number) {
-		return response.status(400).json({
-			error: "Missing name or number"
-		})
-	} 
+    return response.status(400).json({
+      error: 'Missing name or number'
+    })
+  }
   const person = new Person({
     name: body.name,
     number: body.number
@@ -165,7 +167,7 @@ app.put('/api/persons/:id', (request, response, next) => {
     number: body.number
   }
 
-  Person.findByIdAndUpdate(request.params.id, person, {new: true})
+  Person.findByIdAndUpdate(request.params.id, person, { new: true })
     .then(updatedPerson => {
       response.json(updatedPerson)
     })

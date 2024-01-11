@@ -1,6 +1,6 @@
-/* 
+/*
    Add a name and number to database:
-   <node mongo.js password "name surname" 01-7797977> 
+   <node mongo.js password "name surname" 01-7797977>
 
    If the password is the only parameter given to the program:
    <node mongo.js password>
@@ -35,16 +35,16 @@ if(process.argv.length > 3){
     name: name,
     number: number
   })
-  person.save().then(result => {
+  person.save().then(() => {
     console.log(`Added ${name} with number ${number} to phonebook`)
     mongoose.connection.close()
   })
 } else {
   Person.find({}).then(result => {
-    console.log("Phonebook:")
+    console.log('Phonebook:')
     result.forEach(person => {
       console.log(person.name, person.number)
-    });
+    })
     mongoose.connection.close()
   })
 }
